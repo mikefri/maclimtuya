@@ -39,7 +39,8 @@ export default async function handler(req, res) {
       );
       return res.json({ success: true, result });
     } catch (err) {
-      return res.status(500).json({ error: err.message });
+      console.error(`[command] code=${code} value=${JSON.stringify(tuyaValue)} error=${err.message}`);
+      return res.status(500).json({ error: err.message, code, value: tuyaValue });
     }
   }
 
