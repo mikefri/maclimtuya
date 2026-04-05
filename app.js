@@ -81,7 +81,7 @@ async function fetchStatus() {
   if (!deviceId) return;
   showLoading(true);
   try {
-    const res  = await fetch(`/api/device/${deviceId}/status`);
+    const res  = await fetch(`/api/device/${deviceId}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     // data est un tableau [{ code, value }, ...]
@@ -106,7 +106,7 @@ async function sendCommand(code, value) {
 
   showLoading(true);
   try {
-    const res = await fetch(`/api/device/${deviceId}/command`, {
+    const res = await fetch(`/api/device/${deviceId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, value }),
