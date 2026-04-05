@@ -29,7 +29,7 @@ const toast       = $('toast');
   deviceId = saved.deviceId || '';
   $('deviceId').value = deviceId;
   bindEvents();
-  if (deviceId) fetchStatus();
+  if (deviceId) { fetchStatus(); $('diagBtn').style.display = 'block'; }
   else openConfig();
 })();
 
@@ -43,8 +43,22 @@ $('saveConfig').addEventListener('click', () => {
   deviceId = $('deviceId').value.trim();
   if (!deviceId) { showToast('⚠️ Entrez un Device ID', 'error'); return; }
   localStorage.setItem(CONFIG_KEY, JSON.stringify({ deviceId }));
+  $('diagBtn').style.display = 'block';
   showToast('✅ Enregistré', 'success');
   fetchStatus();
+});
+
+$('diagBtn').addEventListener('click', async () => {
+  const out = $('diagOutput');
+  out.style.display = 'block';
+  out.textContent = 'Chargement...';
+  try {
+    const res  = await fetch(`/api/functions/${deviceId}`);
+    const data = await res.json();
+    out.textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    out.textContent = 'Erreur : ' + err.message;
+  }
 });
 
 $('configHeader').addEventListener('click', () => {
