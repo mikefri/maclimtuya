@@ -1,12 +1,10 @@
 // api/device/[id].js
-// GET  /api/device/:id                  → statut de l'appareil
-// GET  /api/device/:id?action=functions → fonctions supportées
-// POST /api/device/:id                  → envoyer une commande
 import { tuyaRequest } from '../_tuya.js';
 
 const ALLOWED_CODES = new Set([
-  'switch', 'temp_set', 'mode', 'fan_speed_enum',
-  'swing_vertical', 'swing_horizontal', 'sleep', 'eco',
+  'Power', 'temp_set', 'mode', 'windspeed',
+  'windshake', 'horizontal', 'vertical',
+  'sleep', 'mode_ECO', 'health', 'light', 'swing3d',
 ]);
 
 export default async function handler(req, res) {
@@ -36,16 +34,15 @@ export default async function handler(req, res) {
     if (!ALLOWED_CODES.has(code))
       return res.status(400).json({ error: `Code non autorisé : ${code}` });
 
+    // temp_set : Tuya stocke en dixièmes (22°C → 220)
     const tuyaValue = code === 'temp_set' ? Math.round(value * 10) : value;
     try {
       const result = await tuyaRequest(
-        'POST',
-        `/v1.0/devices/${id}/commands`,
+        'POST', `/v1.0/devices/${id}/commands`,
         { commands: [{ code, value: tuyaValue }] }
       );
       return res.json({ success: true, result });
     } catch (err) {
-      console.error(`[command] code=${code} value=${JSON.stringify(tuyaValue)} error=${err.message}`);
       return res.status(500).json({ error: err.message, code, value: tuyaValue });
     }
   }
