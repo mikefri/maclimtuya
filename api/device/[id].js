@@ -1,6 +1,7 @@
 // api/device/[id].js
-// GET  /api/device/:id        → statut de l'appareil
-// POST /api/device/:id        → envoyer une commande
+// GET  /api/device/:id                  → statut de l'appareil
+// GET  /api/device/:id?action=functions → fonctions supportées
+// POST /api/device/:id                  → envoyer une commande
 import { tuyaRequest } from '../_tuya.js';
 
 const ALLOWED_CODES = new Set([
@@ -12,9 +13,15 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   const id = req.query.id;
 
-  // ── GET : statut ──────────────────────────────────────────
   if (req.method === 'GET') {
     try {
+      if (req.query.action === 'functions') {
+        const [functions, status] = await Promise.all([
+          tuyaRequest('GET', `/v1.0/devices/${id}/functions`),
+          tuyaRequest('GET', `/v1.0/devices/${id}/status`),
+        ]);
+        return res.json({ functions, status });
+      }
       const result = await tuyaRequest('GET', `/v1.0/devices/${id}/status`);
       return res.json(result);
     } catch (err) {
@@ -22,7 +29,6 @@ export default async function handler(req, res) {
     }
   }
 
-  // ── POST : commande ───────────────────────────────────────
   if (req.method === 'POST') {
     const { code, value } = req.body || {};
     if (!code || value === undefined)
