@@ -275,6 +275,13 @@
       cursor: pointer; transition: opacity 0.2s, transform 0.2s;
       font-family: 'DM Sans', sans-serif;
     }
+    .diag-btn {
+      width: 100%; padding: 10px; margin-top: 8px;
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 12px; color: var(--muted); font-size: 13px;
+      cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    }
+    .diag-btn:hover { border-color: var(--accent2); color: var(--text); }
     .save-btn:hover { opacity: 0.9; transform: scale(1.01); }
 
     /* Toast */
@@ -414,6 +421,8 @@
         <input type="text" id="deviceId" placeholder="xxxxxxxxxxxxxxxx" />
       </div>
       <button class="save-btn" id="saveConfig">Enregistrer & Actualiser</button>
+      <button class="diag-btn" id="diagBtn" style="display:none">🔍 Voir les fonctions supportées</button>
+      <pre id="diagOutput" style="display:none;margin-top:14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:11px;color:var(--accent);overflow:auto;max-height:260px;white-space:pre-wrap;"></pre>
     </div>
   </div>
 
