@@ -4,6 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Airton · Climatisation</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#38bdf8" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Airton" />
+  <link rel="apple-touch-icon" href="/icon_512x512.png" />
+
+  <!-- SEO / partage -->
+  <meta name="description" content="Pilotez votre climatiseur Airton depuis votre téléphone" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
@@ -130,9 +143,16 @@
     .loading.show { opacity: 1; pointer-events: all; }
     .spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--accent); animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Bandeau offline PWA */
+    .offline-banner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 300; background: var(--off); color: white; text-align: center; font-size: 13px; padding: 8px; }
+    .offline-banner.show { display: block; }
   </style>
 </head>
 <body>
+
+  <div class="offline-banner" id="offlineBanner">📡 Vous êtes hors ligne — certaines actions ne sont pas disponibles</div>
+
   <header>
     <div class="logo">
       <div class="logo-icon">❄️</div>
@@ -250,6 +270,23 @@
 
   <div class="toast" id="toast"></div>
   <div class="loading" id="loading"><div class="spinner"></div></div>
+
   <script src="app.js"></script>
+  <script>
+    // Enregistrement du Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('[PWA] Service Worker enregistré :', reg.scope))
+          .catch(err => console.warn('[PWA] Échec du Service Worker :', err));
+      });
+    }
+
+    // Bandeau hors ligne
+    const offlineBanner = document.getElementById('offlineBanner');
+    window.addEventListener('online',  () => offlineBanner.classList.remove('show'));
+    window.addEventListener('offline', () => offlineBanner.classList.add('show'));
+    if (!navigator.onLine) offlineBanner.classList.add('show');
+  </script>
 </body>
 </html>
