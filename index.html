@@ -8,327 +8,135 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0b0f1a;
-      --surface: #111827;
-      --surface2: #1a2235;
-      --border: rgba(255,255,255,0.07);
-      --accent: #38bdf8;
-      --accent2: #818cf8;
-      --heat: #fb923c;
-      --cool: #38bdf8;
-      --dry:  #a78bfa;
-      --fan:  #34d399;
-      --auto: #f9a8d4;
-      --text: #e2e8f0;
-      --muted: #64748b;
-      --on: #22c55e;
-      --off: #ef4444;
-      --radius: 20px;
+      --bg: #0b0f1a; --surface: #111827; --surface2: #1a2235;
+      --border: rgba(255,255,255,0.07); --accent: #38bdf8; --accent2: #818cf8;
+      --heat: #fb923c; --cool: #38bdf8; --dry: #a78bfa; --fan: #34d399; --auto: #f9a8d4;
+      --text: #e2e8f0; --muted: #64748b; --on: #22c55e; --off: #ef4444; --radius: 20px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
       padding: 24px 16px 48px;
     }
-    /* Background blobs */
     body::before {
-      content: '';
-      position: fixed; inset: 0; z-index: -1;
+      content: ''; position: fixed; inset: 0; z-index: -1;
       background:
         radial-gradient(ellipse 600px 400px at 80% 10%, rgba(56,189,248,0.06) 0%, transparent 70%),
         radial-gradient(ellipse 500px 400px at 10% 80%, rgba(129,140,248,0.05) 0%, transparent 70%);
     }
-
-    /* Header */
     header {
       width: 100%; max-width: 520px;
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 4px 32px;
     }
     .logo { display: flex; align-items: center; gap: 10px; }
-    .logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-    }
+    .logo-icon { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
     .logo h1 { font-family: 'Space Mono', monospace; font-size: 16px; letter-spacing: 2px; color: var(--text); text-transform: uppercase; }
-    .logo span { font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--muted); letter-spacing: 0; display: block; }
-    .status-dot {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--muted);
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--muted);
-      transition: background 0.4s;
-    }
+    .logo span { font-size: 11px; color: var(--muted); display: block; }
+    .status-dot { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); transition: background 0.4s; }
     .dot.online { background: var(--on); box-shadow: 0 0 8px var(--on); }
     .dot.offline { background: var(--off); }
+    .card { width: 100%; max-width: 520px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
 
-    /* Main card */
-    .card {
-      width: 100%; max-width: 520px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-
-    /* Power section */
-    .power-section {
-      padding: 28px 28px 24px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-    }
+    /* Power */
+    .power-section { padding: 28px 28px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
     .device-name { font-size: 22px; font-weight: 600; }
     .device-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
-    .power-btn {
-      width: 64px; height: 64px; border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--surface2);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
-      transition: all 0.3s;
-      position: relative;
-      outline: none;
-    }
+    .power-btn { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 26px; transition: all 0.3s; outline: none; }
     .power-btn:hover { border-color: var(--accent); transform: scale(1.05); }
-    .power-btn.on {
-      background: rgba(34,197,94,0.15);
-      border-color: var(--on);
-      box-shadow: 0 0 24px rgba(34,197,94,0.3);
-    }
+    .power-btn.on { background: rgba(34,197,94,0.15); border-color: var(--on); box-shadow: 0 0 24px rgba(34,197,94,0.3); }
     .power-btn.off { border-color: var(--off); background: rgba(239,68,68,0.1); }
-    .power-btn svg { transition: all 0.3s; }
     .power-btn.on svg { stroke: var(--on); }
     .power-btn.off svg { stroke: var(--off); }
 
-    /* Temperature */
-    .temp-section {
-      padding: 32px 28px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-    }
-    .temp-display {
-      display: flex; align-items: flex-start; gap: 4px;
-    }
-    .temp-value {
-      font-family: 'Space Mono', monospace;
-      font-size: 72px; font-weight: 700;
-      line-height: 1;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-      transition: all 0.3s;
-    }
+    /* Temp */
+    .temp-section { padding: 28px 28px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .temp-left { display: flex; flex-direction: column; gap: 12px; }
+    .temp-display { display: flex; align-items: flex-start; gap: 4px; }
+    .temp-value { font-family: 'Space Mono', monospace; font-size: 72px; font-weight: 700; line-height: 1; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; transition: all 0.3s; }
     .temp-unit { font-size: 22px; color: var(--muted); padding-top: 10px; font-family: 'Space Mono', monospace; }
-    .temp-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-
+    .temp-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .temp-current-row { display: flex; align-items: center; gap: 8px; }
+    .temp-current-label { font-size: 12px; color: var(--muted); }
+    .temp-current-val { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--text); }
     .temp-controls { display: flex; flex-direction: column; gap: 10px; }
-    .temp-btn {
-      width: 52px; height: 52px; border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px; color: var(--text);
-      transition: all 0.2s;
-      user-select: none;
-      outline: none;
-    }
-    .temp-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); transform: scale(1.05); }
+    .temp-btn { width: 52px; height: 52px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--text); transition: all 0.2s; user-select: none; outline: none; }
+    .temp-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
     .temp-btn:active { transform: scale(0.96); }
 
-    /* Mode section */
-    .modes-section {
-      padding: 20px 28px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .section-title {
-      font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px;
-      margin-bottom: 14px;
-    }
-    .modes {
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
-    }
-    .mode-btn {
-      padding: 12px 4px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-      font-size: 11px; color: var(--muted);
-      transition: all 0.25s;
-      outline: none;
-    }
+    /* Mode */
+    .modes-section { padding: 20px 28px 24px; border-bottom: 1px solid var(--border); }
+    .section-title { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 14px; }
+    .modes { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .mode-btn { padding: 12px 4px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); transition: all 0.25s; outline: none; }
     .mode-btn .mode-icon { font-size: 20px; }
     .mode-btn:hover { border-color: var(--accent); color: var(--text); }
     .mode-btn.active { color: var(--bg); font-weight: 600; }
-    .mode-btn[data-mode="cool"].active { background: var(--cool); border-color: var(--cool); }
-    .mode-btn[data-mode="heat"].active { background: var(--heat); border-color: var(--heat); }
-    .mode-btn[data-mode="dry"].active  { background: var(--dry);  border-color: var(--dry); }
-    .mode-btn[data-mode="wind"].active { background: var(--fan);  border-color: var(--fan); }
-    .mode-btn[data-mode="auto"].active { background: var(--auto); border-color: var(--auto); }
+    .mode-btn[data-mode="cold"].active  { background: var(--cool); border-color: var(--cool); }
+    .mode-btn[data-mode="heat"].active  { background: var(--heat); border-color: var(--heat); }
+    .mode-btn[data-mode="wet"].active   { background: var(--dry);  border-color: var(--dry); }
+    .mode-btn[data-mode="fan"].active   { background: var(--fan);  border-color: var(--fan); }
+    .mode-btn[data-mode="auto"].active  { background: var(--auto); border-color: var(--auto); }
 
-    /* Fan speed */
-    .fan-section {
-      padding: 20px 28px 24px;
-      border-bottom: 1px solid var(--border);
-    }
-    .fan-speeds { display: flex; gap: 8px; }
-    .fan-btn {
-      flex: 1; padding: 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      cursor: pointer;
-      font-size: 12px; color: var(--muted);
-      transition: all 0.25s;
-      outline: none;
-      text-align: center;
-    }
+    /* Fan */
+    .fan-section { padding: 20px 28px 24px; border-bottom: 1px solid var(--border); }
+    .fan-speeds { display: flex; flex-wrap: wrap; gap: 8px; }
+    .fan-btn { padding: 8px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; font-size: 12px; color: var(--muted); transition: all 0.25s; outline: none; white-space: nowrap; }
     .fan-btn:hover { border-color: var(--accent2); color: var(--text); }
     .fan-btn.active { background: var(--accent2); border-color: var(--accent2); color: white; font-weight: 600; }
 
-    /* Toggles section */
-    .toggles-section {
-      padding: 20px 28px;
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
-    .toggle-item {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
+    /* Windshake */
+    .swing-section { padding: 20px 28px 24px; border-bottom: 1px solid var(--border); }
+    .swing-btns { display: flex; gap: 8px; }
+    .swing-btn { flex: 1; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; font-size: 12px; color: var(--muted); transition: all 0.25s; outline: none; text-align: center; }
+    .swing-btn:hover { border-color: var(--accent); color: var(--text); }
+    .swing-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+
+    /* Toggles */
+    .toggles-section { padding: 20px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .toggle-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.25s; }
     .toggle-item:hover { border-color: var(--accent); }
     .toggle-info { display: flex; align-items: center; gap: 8px; font-size: 13px; }
     .toggle-icon { font-size: 18px; }
-    .toggle-switch {
-      width: 36px; height: 20px; border-radius: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      position: relative; transition: background 0.3s;
-      flex-shrink: 0;
-    }
-    .toggle-switch::after {
-      content: '';
-      position: absolute; top: 2px; left: 2px;
-      width: 14px; height: 14px; border-radius: 50%;
-      background: var(--muted);
-      transition: all 0.3s;
-    }
+    .toggle-switch { width: 36px; height: 20px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); position: relative; transition: background 0.3s; flex-shrink: 0; }
+    .toggle-switch::after { content: ''; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--muted); transition: all 0.3s; }
     .toggle-item.active .toggle-switch { background: rgba(56,189,248,0.2); border-color: var(--accent); }
     .toggle-item.active .toggle-switch::after { background: var(--accent); transform: translateX(16px); }
 
-    /* Config card */
-    .config-card {
-      width: 100%; max-width: 520px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .config-header {
-      padding: 20px 28px 0;
-      display: flex; align-items: center; justify-content: space-between;
-      cursor: pointer;
-    }
+    /* Config */
+    .config-card { width: 100%; max-width: 520px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .config-header { padding: 20px 28px 0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
     .config-header h2 { font-size: 14px; color: var(--muted); font-weight: 500; }
     .config-toggle { color: var(--muted); font-size: 18px; transition: transform 0.3s; }
     .config-toggle.open { transform: rotate(180deg); }
-    .config-body {
-      padding: 0 28px;
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s;
-    }
-    .config-body.open { max-height: 400px; padding: 16px 28px 24px; }
+    .config-body { padding: 0 28px; max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; }
+    .config-body.open { max-height: 500px; padding: 16px 28px 24px; }
     .field { margin-bottom: 14px; }
     .field label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
-    .field input {
-      width: 100%; padding: 10px 14px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text); font-size: 14px;
-      outline: none; font-family: 'Space Mono', monospace;
-      transition: border-color 0.2s;
-    }
+    .field input { width: 100%; padding: 10px 14px; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-size: 14px; outline: none; font-family: 'Space Mono', monospace; transition: border-color 0.2s; }
     .field input:focus { border-color: var(--accent); }
-    .save-btn {
-      width: 100%; padding: 12px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border: none; border-radius: 12px;
-      color: var(--bg); font-size: 14px; font-weight: 600;
-      cursor: pointer; transition: opacity 0.2s, transform 0.2s;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .diag-btn {
-      width: 100%; padding: 10px; margin-top: 8px;
-      background: transparent; border: 1px solid var(--border);
-      border-radius: 12px; color: var(--muted); font-size: 13px;
-      cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
-    }
-    .diag-btn:hover { border-color: var(--accent2); color: var(--text); }
+    .save-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; border-radius: 12px; color: var(--bg); font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.2s; font-family: 'DM Sans', sans-serif; }
     .save-btn:hover { opacity: 0.9; transform: scale(1.01); }
+    .diag-btn { width: 100%; padding: 10px; margin-top: 8px; background: transparent; border: 1px solid var(--border); border-radius: 12px; color: var(--muted); font-size: 13px; cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif; }
+    .diag-btn:hover { border-color: var(--accent2); color: var(--text); }
 
-    /* Toast */
-    .toast {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px 20px;
-      font-size: 14px; color: var(--text);
-      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
-      z-index: 100; white-space: nowrap;
-    }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 20px; font-size: 14px; color: var(--text); transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); z-index: 100; white-space: nowrap; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast.success { border-color: var(--on); color: var(--on); }
     .toast.error { border-color: var(--off); color: var(--off); }
-
-    /* Loading overlay */
-    .loading {
-      position: fixed; inset: 0; z-index: 200;
-      background: rgba(11,15,26,0.8);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none; transition: opacity 0.2s;
-    }
+    .loading { position: fixed; inset: 0; z-index: 200; background: rgba(11,15,26,0.8); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
     .loading.show { opacity: 1; pointer-events: all; }
-    .spinner {
-      width: 40px; height: 40px; border-radius: 50%;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      animation: spin 0.8s linear infinite;
-    }
+    .spinner { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--border); border-top-color: var(--accent); animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 420px) {
-      .temp-value { font-size: 56px; }
-      .modes { grid-template-columns: repeat(5, 1fr); gap: 6px; }
-      .mode-btn { padding: 10px 2px; }
-    }
   </style>
 </head>
 <body>
-
   <header>
     <div class="logo">
       <div class="logo-icon">❄️</div>
-      <div>
-        <h1>Airton</h1>
-        <span>Tuya Cloud Control</span>
-      </div>
+      <div><h1>Airton</h1><span>Tuya Cloud Control</span></div>
     </div>
     <div class="status-dot">
       <div class="dot" id="statusDot"></div>
@@ -337,11 +145,10 @@
   </header>
 
   <div class="card">
-    <!-- Power -->
     <div class="power-section">
       <div>
         <div class="device-name" id="deviceName">Climatiseur</div>
-        <div class="device-sub" id="deviceSub">Airton · Tuya Cloud</div>
+        <div class="device-sub">Airton · Tuya Cloud</div>
       </div>
       <button class="power-btn" id="powerBtn" title="Marche / Arrêt">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -350,14 +157,19 @@
       </button>
     </div>
 
-    <!-- Temperature -->
     <div class="temp-section">
-      <div>
-        <div class="temp-display">
-          <div class="temp-value" id="tempDisplay">22</div>
-          <div class="temp-unit">°C</div>
+      <div class="temp-left">
+        <div>
+          <div class="temp-display">
+            <div class="temp-value" id="tempDisplay">22</div>
+            <div class="temp-unit">°C</div>
+          </div>
+          <div class="temp-label">Température cible</div>
         </div>
-        <div class="temp-label">Température cible</div>
+        <div class="temp-current-row">
+          <span class="temp-current-label">Pièce :</span>
+          <span class="temp-current-val" id="tempCurrent">—</span>
+        </div>
       </div>
       <div class="temp-controls">
         <button class="temp-btn" id="tempUp">+</button>
@@ -365,39 +177,42 @@
       </div>
     </div>
 
-    <!-- Mode -->
     <div class="modes-section">
       <div class="section-title">Mode</div>
       <div class="modes">
-        <button class="mode-btn" data-mode="cool"><span class="mode-icon">❄️</span>Froid</button>
+        <button class="mode-btn" data-mode="cold"><span class="mode-icon">❄️</span>Froid</button>
         <button class="mode-btn" data-mode="heat"><span class="mode-icon">🔥</span>Chaud</button>
-        <button class="mode-btn" data-mode="dry"><span class="mode-icon">💧</span>Séchage</button>
-        <button class="mode-btn" data-mode="wind"><span class="mode-icon">💨</span>Vent</button>
+        <button class="mode-btn" data-mode="wet"><span class="mode-icon">💧</span>Humide</button>
+        <button class="mode-btn" data-mode="fan"><span class="mode-icon">💨</span>Vent</button>
         <button class="mode-btn" data-mode="auto"><span class="mode-icon">🔄</span>Auto</button>
       </div>
     </div>
 
-    <!-- Fan speed -->
     <div class="fan-section">
       <div class="section-title">Vitesse du ventilateur</div>
       <div class="fan-speeds">
         <button class="fan-btn" data-speed="auto">Auto</button>
         <button class="fan-btn" data-speed="low">Basse</button>
-        <button class="fan-btn" data-speed="middle">Moyenne</button>
+        <button class="fan-btn" data-speed="low_mid">Basse+</button>
+        <button class="fan-btn" data-speed="mid">Moyenne</button>
+        <button class="fan-btn" data-speed="mid_high">Haute−</button>
         <button class="fan-btn" data-speed="high">Haute</button>
+        <button class="fan-btn" data-speed="mute">Silencieux</button>
+        <button class="fan-btn" data-speed="turbo">Turbo</button>
       </div>
     </div>
 
-    <!-- Toggles -->
+    <div class="swing-section">
+      <div class="section-title">Orientation du flux (windshake)</div>
+      <div class="swing-btns">
+        <button class="swing-btn" data-shake="off">Fixe</button>
+        <button class="swing-btn" data-shake="un_down">↕ Vertical</button>
+        <button class="swing-btn" data-shake="left_right">↔ Horizontal</button>
+        <button class="swing-btn" data-shake="all">↕↔ Tous</button>
+      </div>
+    </div>
+
     <div class="toggles-section">
-      <div class="toggle-item" id="swingVToggle">
-        <div class="toggle-info"><span class="toggle-icon">↕️</span> Oscillation V.</div>
-        <div class="toggle-switch"></div>
-      </div>
-      <div class="toggle-item" id="swingHToggle">
-        <div class="toggle-info"><span class="toggle-icon">↔️</span> Oscillation H.</div>
-        <div class="toggle-switch"></div>
-      </div>
       <div class="toggle-item" id="sleepToggle">
         <div class="toggle-info"><span class="toggle-icon">🌙</span> Mode nuit</div>
         <div class="toggle-switch"></div>
@@ -406,10 +221,17 @@
         <div class="toggle-info"><span class="toggle-icon">🍃</span> Mode éco</div>
         <div class="toggle-switch"></div>
       </div>
+      <div class="toggle-item" id="healthToggle">
+        <div class="toggle-info"><span class="toggle-icon">✨</span> Santé</div>
+        <div class="toggle-switch"></div>
+      </div>
+      <div class="toggle-item" id="lightToggle">
+        <div class="toggle-info"><span class="toggle-icon">💡</span> Lumière</div>
+        <div class="toggle-switch"></div>
+      </div>
     </div>
   </div>
 
-  <!-- Config -->
   <div class="config-card">
     <div class="config-header" id="configHeader">
       <h2>⚙️ Configuration</h2>
@@ -428,7 +250,6 @@
 
   <div class="toast" id="toast"></div>
   <div class="loading" id="loading"><div class="spinner"></div></div>
-
   <script src="app.js"></script>
 </body>
 </html>
