@@ -95,6 +95,7 @@ async function fetchStatus() {
     data.forEach(({ code, value }) => applyProp(code, value));
     renderUI();
     setOnline(true);
+    updateLastSync();
   } catch (err) {
     setOnline(false);
     showToast('❌ Impossible de lire l\'état', 'error');
@@ -139,6 +140,15 @@ function applyProp(code, value) {
     case 'health':      state.health     = value; break;
     case 'light':       state.light      = value; break;
   }
+}
+
+function updateLastSync() {
+  const el = $('lastSync');
+  if (!el) return;
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  el.textContent = `Actualisé à ${hh}:${mm}`;
 }
 
 function renderUI() {
