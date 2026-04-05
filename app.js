@@ -53,7 +53,7 @@ $('diagBtn').addEventListener('click', async () => {
   out.style.display = 'block';
   out.textContent = 'Chargement...';
   try {
-    const res  = await fetch(`/api/functions/${deviceId}`);
+    const res  = await fetch(`/api/device/${deviceId}?action=functions`);
     const data = await res.json();
     out.textContent = JSON.stringify(data, null, 2);
   } catch (err) {
