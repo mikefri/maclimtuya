@@ -1,0 +1,40 @@
+{
+  "name": "Airton Control",
+  "short_name": "Airton",
+  "description": "Pilotez votre climatiseur Airton depuis votre téléphone",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f1a",
+  "theme_color": "#38bdf8",
+  "orientation": "portrait-primary",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/icon_512x512.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "Allumer la clim",
+      "short_name": "Allumer",
+      "url": "/?action=on",
+      "icons": [{ "src": "/icon_512x512.png", "sizes": "512x512" }]
+    },
+    {
+      "name": "Éteindre la clim",
+      "short_name": "Éteindre",
+      "url": "/?action=off",
+      "icons": [{ "src": "/icon_512x512.png", "sizes": "512x512" }]
+    }
+  ]
+}
