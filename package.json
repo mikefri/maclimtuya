@@ -1,0 +1,7 @@
+{
+  "name": "airton-tuya-controller",
+  "version": "2.0.0",
+  "description": "Pilotez votre climatisation Airton via Tuya Cloud — déployé sur Vercel",
+  "type": "module",
+  "license": "MIT"
+}
